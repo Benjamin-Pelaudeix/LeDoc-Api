@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MeetRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MeetRepository::class)]
@@ -27,6 +29,14 @@ class Meet
 
     #[ORM\Column(type: 'boolean')]
     private $isUrgent;
+
+    #[ORM\ManyToMany(targetEntity: Patient::class, inversedBy: 'meets')]
+    private $patients;
+
+    public function __construct()
+    {
+        $this->patients = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -89,6 +99,30 @@ class Meet
     public function setIsUrgent(bool $isUrgent): self
     {
         $this->isUrgent = $isUrgent;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Patient[]
+     */
+    public function getPatients(): Collection
+    {
+        return $this->patients;
+    }
+
+    public function addPatient(Patient $patient): self
+    {
+        if (!$this->patients->contains($patient)) {
+            $this->patients[] = $patient;
+        }
+
+        return $this;
+    }
+
+    public function removePatient(Patient $patient): self
+    {
+        $this->patients->removeElement($patient);
 
         return $this;
     }

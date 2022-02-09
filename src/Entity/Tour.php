@@ -19,6 +19,9 @@ class Tour
     #[ORM\Column(type: 'datetime')]
     private $date;
 
+    #[ORM\ManyToOne(targetEntity: Meet::class)]
+    private $meets;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class Tour
     public function setDate(\DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getMeets(): ?Meet
+    {
+        return $this->meets;
+    }
+
+    public function setMeets(?Meet $meets): self
+    {
+        $this->meets = $meets;
 
         return $this;
     }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TreatmentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TreatmentRepository::class)]
@@ -21,6 +23,14 @@ class Treatment
 
     #[ORM\Column(type: 'array')]
     private $repeats = [];
+
+    #[ORM\ManyToMany(targetEntity: Drug::class)]
+    private $drugs;
+
+    public function __construct()
+    {
+        $this->drugs = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -59,6 +69,30 @@ class Treatment
     public function setRepeats(array $repeats): self
     {
         $this->repeats = $repeats;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Drug[]
+     */
+    public function getDrugs(): Collection
+    {
+        return $this->drugs;
+    }
+
+    public function addDrug(Drug $drug): self
+    {
+        if (!$this->drugs->contains($drug)) {
+            $this->drugs[] = $drug;
+        }
+
+        return $this;
+    }
+
+    public function removeDrug(Drug $drug): self
+    {
+        $this->drugs->removeElement($drug);
 
         return $this;
     }
