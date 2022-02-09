@@ -22,6 +22,10 @@ class Document
     #[ORM\Column(type: 'boolean')]
     private $isOrdonnance;
 
+    #[ORM\ManyToOne(targetEntity: Patient::class, inversedBy: 'documents')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $patient;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +63,18 @@ class Document
     public function setIsOrdonnance(bool $isOrdonnance): self
     {
         $this->isOrdonnance = $isOrdonnance;
+
+        return $this;
+    }
+
+    public function getPatient(): ?Patient
+    {
+        return $this->patient;
+    }
+
+    public function setPatient(?Patient $patient): self
+    {
+        $this->patient = $patient;
 
         return $this;
     }
