@@ -2,10 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\BloodGroupRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: BloodGroupRepository::class)]
+#[ApiResource]
 class BloodGroup
 {
     #[ORM\Id]
@@ -14,6 +17,7 @@ class BloodGroup
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["read:patient"])]
     private $label;
 
     public function getId(): ?int
