@@ -2,12 +2,18 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\GenderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: GenderRepository::class)]
+#[ApiResource(
+    denormalizationContext: ["groups"=>["write:gender"]],
+    normalizationContext: ["groups"=> ["read:gender"]],
+)]
 class Gender
 {
     #[ORM\Id]
@@ -16,6 +22,7 @@ class Gender
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["read:patient"])]
     private $label;
 
     #[ORM\OneToMany(mappedBy: 'gender', targetEntity: Patient::class)]

@@ -2,12 +2,18 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\PatientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PatientRepository::class)]
+#[ApiResource(
+    denormalizationContext: ["groups"=>["write:patient"]],
+    normalizationContext: ["groups"=> ["read:patient"]],
+)]
 class Patient
 {
     #[ORM\Id]
@@ -16,31 +22,40 @@ class Patient
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["read:patient", "write:patient"])]
     private $firstName;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["read:patient", "write:patient"])]
     private $lastName;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["read:patient", "write:patient"])]
     private $allergies;
 
     #[ORM\Column(type: 'float')]
+    #[Groups(["read:patient", "write:patient"])]
     private $height;
 
     #[ORM\Column(type: 'float')]
+    #[Groups(["read:patient", "write:patient"])]
     private $weight;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["read:patient", "write:patient"])]
     private $socialNumber;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["read:patient", "write:patient"])]
     private $notes;
 
     #[ORM\ManyToOne(targetEntity: Gender::class, inversedBy: 'patients')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["read:patient", "write:patient"])]
     private $gender;
 
     #[ORM\ManyToOne(targetEntity: BloodGroup::class)]
+    #[Groups(["read:patient", "write:patient"])]
     private $bloodGroup;
 
     #[ORM\OneToMany(mappedBy: 'patient', targetEntity: Document::class)]
