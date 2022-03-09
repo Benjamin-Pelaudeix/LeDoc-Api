@@ -9,7 +9,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MeetRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    denormalizationContext: ["groups"=>["write:meet"]],
+    normalizationContext: ["groups"=> ["read:meet"]],
+)]
 class Meet
 {
     #[ORM\Id]
@@ -18,18 +21,23 @@ class Meet
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["read:meet", "write:meet"])]
     private $subject;
 
     #[ORM\Column(type: 'datetime')]
+    #[Groups(["read:meet", "write:meet"])]
     private $startDateTime;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["read:meet", "write:meet"])]
     private $notes;
 
     #[ORM\Column(type: 'boolean')]
+    #[Groups(["read:meet", "write:meet"])]
     private $isVideo;
 
     #[ORM\Column(type: 'boolean')]
+    #[Groups(["read:meet", "write:meet"])]
     private $isUrgent;
 
     #[ORM\ManyToMany(targetEntity: Patient::class, inversedBy: 'meets')]
