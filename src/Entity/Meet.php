@@ -35,6 +35,9 @@ class Meet
     #[ORM\ManyToMany(targetEntity: Patient::class, inversedBy: 'meets')]
     private $patients;
 
+    #[ORM\ManyToOne(targetEntity: Tour::class, inversedBy: 'meets')]
+    private $tour;
+
     public function __construct()
     {
         $this->patients = new ArrayCollection();
@@ -125,6 +128,18 @@ class Meet
     public function removePatient(Patient $patient): self
     {
         $this->patients->removeElement($patient);
+
+        return $this;
+    }
+
+    public function getTour(): ?Tour
+    {
+        return $this->tour;
+    }
+
+    public function setTour(?Tour $tour): self
+    {
+        $this->tour = $tour;
 
         return $this;
     }

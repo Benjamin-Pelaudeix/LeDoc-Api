@@ -3,8 +3,11 @@
 namespace App\DataFixtures;
 
 use App\Entity\BloodGroup;
+use App\Entity\Drug;
 use App\Entity\Gender;
+use App\Entity\Meet;
 use App\Entity\Patient;
+use App\Entity\Treatment;
 use App\Repository\GenderRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManager;
@@ -37,6 +40,15 @@ class AppFixtures extends Fixture
         }
         $manager->flush();
 
+        // DRUG DATAS
+        for ($i=0;$i<=10;$i++)
+        {
+            $drug = new Drug();
+            $drug->setLabel($faker->word);
+            $manager->persist($drug);
+        }
+        $manager->flush();
+
         // PATIENTS DATAS
         for ($i=0;$i<=10;$i++)
         {
@@ -53,5 +65,41 @@ class AppFixtures extends Fixture
             $manager->persist($patient);
         }
         $manager->flush();
+
+        // MEETS DATAS
+        $patients = $manager->getRepository(Patient::class)->findAll();
+        for($i=0;$i<=50;$i++)
+        {
+            $meet = new Meet();
+            $meet->setSubject($faker->word);
+            $meet->setStartDateTime($faker->dateTimeThisMonth);
+            $meet->setNotes($faker->word);
+            $meet->setIsUrgent($faker->randomElement([true,false]));
+            $meet->setIsVideo($faker->randomElement([true,false]));
+
+            $nbMeet = random_int(1,5);
+            for ($j=0;$j<=$nbMeet-1;$j++)
+            {
+                $meet->addPatient($patients[random_int(0,count($patients)-1)]);
+            }
+            $manager->persist($meet);
+        }
+        $manager->flush();
+
+        // TREATMENT DATAS
+        for ($i=0;$i<=20;$i++)
+        {
+            $date = $faker->dateTimeThisMonth;
+            $treatment = new Treatment();
+            $treatment->setStartDate($date);
+            $treatment->setEndDate($date->modify('+1 hour'));
+            $treatment->setRepeats([]);
+            $treatment->setPatient($patients[random_int(0,count($patients)-1)]);
+            $manager->persist($treatment);
+        }
+        $manager->flush();
+
     }
+
+
 }

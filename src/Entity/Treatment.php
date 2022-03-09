@@ -17,10 +17,10 @@ class Treatment
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'date')]
+    #[ORM\Column(type: 'datetime')]
     private $startDate;
 
-    #[ORM\Column(type: 'date')]
+    #[ORM\Column(type: 'datetime')]
     private $endDate;
 
     #[ORM\Column(type: 'array')]
@@ -28,6 +28,9 @@ class Treatment
 
     #[ORM\ManyToMany(targetEntity: Drug::class)]
     private $drugs;
+
+    #[ORM\ManyToOne(targetEntity: Patient::class)]
+    private $patient;
 
     public function __construct()
     {
@@ -95,6 +98,18 @@ class Treatment
     public function removeDrug(Drug $drug): self
     {
         $this->drugs->removeElement($drug);
+
+        return $this;
+    }
+
+    public function getPatient(): ?self
+    {
+        return $this->patient;
+    }
+
+    public function setPatient(?Patient $patient): self
+    {
+        $this->patient = $patient;
 
         return $this;
     }

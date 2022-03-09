@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\TourRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TourRepository::class)]
@@ -21,8 +23,13 @@ class Tour
     #[ORM\Column(type: 'datetime')]
     private $date;
 
-    #[ORM\ManyToOne(targetEntity: Meet::class)]
+    #[ORM\OneToMany(mappedBy: 'tour', targetEntity: Meet::class)]
     private $meets;
+
+    public function __construct()
+    {
+        $this->meets = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -61,6 +68,28 @@ class Tour
     public function setMeets(?Meet $meets): self
     {
         $this->meets = $meets;
+
+        return $this;
+    }
+
+    public function addMeet(Meet $meet): self
+    {
+        if (!$this->meets->contains($meet)) {
+            $this->meets[] = $meet;
+            $meet->setTour($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMeet(Meet $meet): self
+    {
+        if ($this->meets->removeElement($meet)) {
+            // set the owning side to null (unless already changed)
+            if ($meet->getTour() === $this) {
+                $meet->setTour(null);
+            }
+        }
 
         return $this;
     }
