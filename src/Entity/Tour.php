@@ -7,7 +7,10 @@ use App\Repository\TourRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TourRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    denormalizationContext: ["groups"=>["write:tour"]],
+    normalizationContext: ["groups"=> ["read:tour"]],
+)]
 class Tour
 {
     #[ORM\Id]
@@ -16,9 +19,11 @@ class Tour
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["read:tour", "write:tour"])]
     private $name;
 
     #[ORM\Column(type: 'datetime')]
+    #[Groups(["read:tour", "write:tour"])]
     private $date;
 
     #[ORM\ManyToOne(targetEntity: Meet::class)]

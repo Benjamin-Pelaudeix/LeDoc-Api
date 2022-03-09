@@ -9,7 +9,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TreatmentRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    denormalizationContext: ["groups"=>["write:treatment"]],
+    normalizationContext: ["groups"=> ["read:treatment"]],
+)]
 class Treatment
 {
     #[ORM\Id]
@@ -18,12 +21,15 @@ class Treatment
     private $id;
 
     #[ORM\Column(type: 'date')]
+    #[Groups(["read:treatment", "write:treatment"])]
     private $startDate;
 
     #[ORM\Column(type: 'date')]
+    #[Groups(["read:treatment", "write:treatment"])]
     private $endDate;
 
     #[ORM\Column(type: 'array')]
+    #[Groups(["read:treatment", "write:treatment"])]
     private $repeats = [];
 
     #[ORM\ManyToMany(targetEntity: Drug::class)]
