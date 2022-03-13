@@ -45,7 +45,7 @@ class Meet
 
     #[ORM\Column(type: 'boolean')]
     private $isMissedMeet;
-    
+
     #[ORM\ManyToOne(targetEntity: Tour::class, inversedBy: 'meets')]
     private $tour;
 
@@ -151,7 +151,10 @@ class Meet
     public function setIsMissedMeet(bool $isMissedMeet): self
     {
         $this->isMissedMeet = $isMissedMeet;
-   
+
+        return $this;
+    }
+
  	public function getTour(): ?Tour
     {
         return $this->tour;
