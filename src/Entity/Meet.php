@@ -43,6 +43,9 @@ class Meet
     #[ORM\ManyToMany(targetEntity: Patient::class, inversedBy: 'meets')]
     private $patients;
 
+    #[ORM\Column(type: 'boolean')]
+    private $isMissedMeet;
+    
     #[ORM\ManyToOne(targetEntity: Tour::class, inversedBy: 'meets')]
     private $tour;
 
@@ -140,7 +143,16 @@ class Meet
         return $this;
     }
 
-    public function getTour(): ?Tour
+    public function getIsMissedMeet(): ?bool
+    {
+        return $this->isMissedMeet;
+    }
+
+    public function setIsMissedMeet(bool $isMissedMeet): self
+    {
+        $this->isMissedMeet = $isMissedMeet;
+   
+ 	public function getTour(): ?Tour
     {
         return $this->tour;
     }

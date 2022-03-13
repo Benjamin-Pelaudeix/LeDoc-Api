@@ -57,7 +57,7 @@ class AppFixtures extends Fixture
             $patient->setLastName($faker->lastName);
             $patient->setHeight('1'.$faker->randomNumber(2, true));
             $patient->setWeight($faker->randomNumber(2, true));
-            $patient->setSocialNumber($faker->randomNumber(7,true).$faker->randomNumber(7,true));
+            $patient->setSocialNumber('1234');
             $patient->setAllergies($faker->word());
             $patient->setBloodGroup($manager->getRepository(BloodGroup::class)->findAll()[random_int(0,sizeof($groups)-1)]);
             $patient->setGender($manager->getRepository(Gender::class)->findAll()[random_int(0,1)]);

@@ -19,6 +19,16 @@ class MeetRepository extends ServiceEntityRepository
         parent::__construct($registry, Meet::class);
     }
 
+    public function getMeetsBetweenDates(int $periodicity)
+    {
+        return $this->createQueryBuilder('m')
+            ->where('m.startDateTime <= CURRENT_DATE() - :periodicity')
+            ->andWhere('m.startDateTime <= CURRENT_DATE()')
+            ->setParameter('periodicity', $periodicity)
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Meet[] Returns an array of Meet objects
     //  */
