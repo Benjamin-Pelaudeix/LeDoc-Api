@@ -19,6 +19,18 @@ class DocumentRepository extends ServiceEntityRepository
         parent::__construct($registry, Document::class);
     }
 
+    public function getOrdonnancesBetweenDates(int $periodicity)
+    {
+        return $this->createQueryBuilder('d')
+            ->where('d.isOrdonnance = :isOrder')
+            ->andWhere('d.uploadAt <= CURRENT_DATE() - :period')
+            ->andWhere('d.uploadAt <= CURRENT_DATE()')
+            ->setParameter('isOrder', true)
+            ->setParameter('period', $periodicity)
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Document[] Returns an array of Document objects
     //  */

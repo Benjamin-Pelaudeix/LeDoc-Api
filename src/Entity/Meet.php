@@ -35,6 +35,9 @@ class Meet
     #[ORM\ManyToMany(targetEntity: Patient::class, inversedBy: 'meets')]
     private $patients;
 
+    #[ORM\Column(type: 'boolean')]
+    private $isMissedMeet;
+
     public function __construct()
     {
         $this->patients = new ArrayCollection();
@@ -125,6 +128,18 @@ class Meet
     public function removePatient(Patient $patient): self
     {
         $this->patients->removeElement($patient);
+
+        return $this;
+    }
+
+    public function getIsMissedMeet(): ?bool
+    {
+        return $this->isMissedMeet;
+    }
+
+    public function setIsMissedMeet(bool $isMissedMeet): self
+    {
+        $this->isMissedMeet = $isMissedMeet;
 
         return $this;
     }
