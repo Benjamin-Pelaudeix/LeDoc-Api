@@ -26,4 +26,6 @@ Pour fluidifier l'utilisation de l'application, des données fictives créées g
 `php bin/console doctrine:fixtures:load`
 
 La base de données possède maintenant un schéma à jour avec des données.
-## Routes mises en places
+
+## Documentation de l'API
+La documentation de l'API est disponible au lien suivant :![https://localhost:8000/api].
