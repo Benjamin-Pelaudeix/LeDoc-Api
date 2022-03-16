@@ -22,7 +22,7 @@ class MeetRepository extends ServiceEntityRepository
     public function getMeetsBetweenDates(int $periodicity)
     {
         return $this->createQueryBuilder('m')
-            ->where('m.startDateTime <= CURRENT_DATE() - :periodicity')
+            ->where('m.startDateTime >= CURRENT_DATE() - :periodicity')
             ->andWhere('m.startDateTime <= CURRENT_DATE()')
             ->setParameter('periodicity', $periodicity)
             ->getQuery()
@@ -33,7 +33,7 @@ class MeetRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('m')
             ->where('m.isVideo = :isVideo')
-            ->andWhere('m.startDateTime <= CURRENT_DATE() - :periodicity')
+            ->andWhere('m.startDateTime >= CURRENT_DATE() - :periodicity')
             ->andWhere('m.startDateTime <= CURRENT_DATE()')
             ->setParameter('isVideo', true)
             ->setParameter('periodicity', $periodicity)
@@ -45,7 +45,7 @@ class MeetRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('m')
             ->where('m.isUrgent = :isUrgent')
-            ->andWhere('m.startDateTime <= CURRENT_DATE() - :periodicity')
+            ->andWhere('m.startDateTime >= CURRENT_DATE() - :periodicity')
             ->andWhere('m.startDateTime <= CURRENT_DATE()')
             ->setParameter('isUrgent', true)
             ->setParameter('periodicity', $periodicity)
@@ -56,8 +56,8 @@ class MeetRepository extends ServiceEntityRepository
     public function getMissedMeetsBetweenDates(int $periodicity)
     {
         return $this->createQueryBuilder('m')
-            ->where('m.isMissed = :isMissed')
-            ->andWhere('m.startDateTime <= CURRENT_DATE() - :periodicity')
+            ->where('m.isMissedMeet = :isMissed')
+            ->andWhere('m.startDateTime >= CURRENT_DATE() - :periodicity')
             ->andWhere('m.startDateTime <= CURRENT_DATE()')
             ->setParameter('isMissed', true)
             ->setParameter('periodicity', $periodicity)
