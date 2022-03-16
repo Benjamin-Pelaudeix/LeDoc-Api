@@ -1,7 +1,7 @@
 # LEDOC API - Symfony
 **© Manon DELEEST - Benjamin PELAUDEIX - Valentin ROUGIER - Florian TORIBIO**
 
-[![Langage](https://skillicons.dev/icons?i=symfony)](https://skillicons.dev)
+[![Langage](https://skillicons.dev/icons?i=php)](https://skillicons.dev)
 
 ## Installation du projet
 ### Récuperation du projet
