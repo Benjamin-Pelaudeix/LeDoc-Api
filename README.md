@@ -1,6 +1,8 @@
 # LEDOC API - Symfony
 **© Manon DELEEST - Benjamin PELAUDEIX - Valentin ROUGIER - Florian TORIBIO**
 
+[![Langage](https://skillicons.dev/icons?i=symfony)](https://skillicons.dev)
+
 ## Installation du projet
 ### Récuperation du projet
 Le projet est téléchargeable en HTTPS ou en SSH via ces commandes : 
