@@ -2,8 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\StatsController;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\PatientRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -14,6 +16,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiResource(
     denormalizationContext: ["groups"=>["write:patient"]],
     normalizationContext: ["groups"=> ["read:patient"]]
+)]
+#[ApiFilter(
+    SearchFilter::class, properties: ["lastName"=>"partial"]
 )]
 class Patient
 {

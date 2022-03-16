@@ -14,13 +14,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class StatsController extends AbstractController
 {
     #[Route('/api/stats/{periodicity}', name:'api_stats')]
-    public function statsPatients(EntityManagerInterface $em, int $periodicity): JsonResponse
+    public function statsPatients(EntityManagerInterface $em, int $periodicity = 1): JsonResponse
     {
         $nbDocuments =  count($em->getRepository(Document::class)->getOrdonnancesBetweenDates($periodicity));
         $nbMeets = count($em->getRepository(Meet::class)->getMeetsBetweenDates($periodicity));
-        $nbVideoMeets = count($em->getRepository(Meet::class)->findBy(['isVideo' => true]));
-        $nbUrgencies = count($em->getRepository(Meet::class)->findBy(['isUrgent' => true]));
-        $nbMissedMeets = count($em->getRepository(Meet::class)->findBy(['isMissedMeet' => true]));
+        $nbVideoMeets = count($em->getRepository(Meet::class)->getVideoMeetsBetweenDates($periodicity));
+        $nbUrgencies = count($em->getRepository(Meet::class)->getUrgentMeetsBetweenDates($periodicity));
+        $nbMissedMeets = count($em->getRepository(Meet::class)->getMissedMeetsBetweenDates($periodicity));
         return new JsonResponse(['orders' => $nbDocuments, 'meets' => $nbMeets, 'videoMeets' => $nbVideoMeets, 'urgencies' => $nbUrgencies, 'missedMeets' => $nbMissedMeets]);
     }
 }

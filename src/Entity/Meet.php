@@ -9,7 +9,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MeetRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    denormalizationContext: ["groups"=>["write:meet"]],
+    normalizationContext: ["groups"=> ["read:meet"]],
+)]
 class Meet
 {
     #[ORM\Id]
@@ -18,18 +21,23 @@ class Meet
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["read:meet", "write:meet"])]
     private $subject;
 
     #[ORM\Column(type: 'datetime')]
+    #[Groups(["read:meet", "write:meet"])]
     private $startDateTime;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[Groups(["read:meet", "write:meet"])]
     private $notes;
 
     #[ORM\Column(type: 'boolean')]
+    #[Groups(["read:meet", "write:meet"])]
     private $isVideo;
 
     #[ORM\Column(type: 'boolean')]
+    #[Groups(["read:meet", "write:meet"])]
     private $isUrgent;
 
     #[ORM\ManyToMany(targetEntity: Patient::class, inversedBy: 'meets')]
@@ -37,6 +45,9 @@ class Meet
 
     #[ORM\Column(type: 'boolean')]
     private $isMissedMeet;
+
+    #[ORM\ManyToOne(targetEntity: Tour::class, inversedBy: 'meets')]
+    private $tour;
 
     public function __construct()
     {
@@ -140,6 +151,18 @@ class Meet
     public function setIsMissedMeet(bool $isMissedMeet): self
     {
         $this->isMissedMeet = $isMissedMeet;
+
+        return $this;
+    }
+
+ 	public function getTour(): ?Tour
+    {
+        return $this->tour;
+    }
+
+    public function setTour(?Tour $tour): self
+    {
+        $this->tour = $tour;
 
         return $this;
     }

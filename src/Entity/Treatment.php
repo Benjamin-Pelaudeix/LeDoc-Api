@@ -9,7 +9,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TreatmentRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    denormalizationContext: ["groups"=>["write:treatment"]],
+    normalizationContext: ["groups"=> ["read:treatment"]],
+)]
 class Treatment
 {
     #[ORM\Id]
@@ -18,16 +21,22 @@ class Treatment
     private $id;
 
     #[ORM\Column(type: 'date')]
+    #[Groups(["read:treatment", "write:treatment"])]
     private $startDate;
 
     #[ORM\Column(type: 'date')]
+    #[Groups(["read:treatment", "write:treatment"])]
     private $endDate;
 
     #[ORM\Column(type: 'array')]
+    #[Groups(["read:treatment", "write:treatment"])]
     private $repeats = [];
 
     #[ORM\ManyToMany(targetEntity: Drug::class)]
     private $drugs;
+
+    #[ORM\ManyToOne(targetEntity: Patient::class)]
+    private $patient;
 
     public function __construct()
     {
@@ -95,6 +104,18 @@ class Treatment
     public function removeDrug(Drug $drug): self
     {
         $this->drugs->removeElement($drug);
+
+        return $this;
+    }
+
+    public function getPatient(): ?self
+    {
+        return $this->patient;
+    }
+
+    public function setPatient(?Patient $patient): self
+    {
+        $this->patient = $patient;
 
         return $this;
     }
