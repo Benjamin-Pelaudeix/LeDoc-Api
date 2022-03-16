@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\BloodGroup;
+use App\Entity\Document;
 use App\Entity\Drug;
 use App\Entity\Gender;
 use App\Entity\Meet;
@@ -76,7 +77,7 @@ class AppFixtures extends Fixture
             $meet->setNotes($faker->word);
             $meet->setIsUrgent($faker->randomElement([true,false]));
             $meet->setIsVideo($faker->randomElement([true,false]));
-
+            $meet->setIsMissedMeet($faker->randomElement([true,false]));
             $nbMeet = random_int(1,5);
             for ($j=0;$j<=$nbMeet-1;$j++)
             {
@@ -99,6 +100,17 @@ class AppFixtures extends Fixture
         }
         $manager->flush();
 
+        // DOCUMENT DATAS
+        for ($i=0;$i<=20;$i++)
+        {
+            $document = new Document();
+            $document->setPatient($patients[random_int(0,count($patients)-1)]);
+            $document->setName($faker->word);
+            $document->setIsOrdonnance($faker->randomElement([true,false]));
+            $document->setUploadAt(new \DateTime('now'));
+            $manager->persist($document);
+        }
+        $manager->flush();
     }
 
 
