@@ -8,6 +8,7 @@ use App\Entity\Drug;
 use App\Entity\Gender;
 use App\Entity\Meet;
 use App\Entity\Patient;
+use App\Entity\Tour;
 use App\Entity\Treatment;
 use App\Repository\GenderRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -50,6 +51,16 @@ class AppFixtures extends Fixture
         }
         $manager->flush();
 
+        // TOUR DATAS
+        for ($i=0;$i<10;$i++)
+        {
+            $tour = new Tour();
+            $tour->setName($faker->word);
+            $tour->setDate(new \DateTime('now'));
+            $manager->persist($tour);
+        }
+        $manager->flush();
+
         // PATIENTS DATAS
         for ($i=0;$i<=10;$i++)
         {
@@ -69,6 +80,7 @@ class AppFixtures extends Fixture
 
         // MEETS DATAS
         $patients = $manager->getRepository(Patient::class)->findAll();
+        $tours = $manager->getRepository(Tour::class)->findAll();
         for($i=0;$i<=50;$i++)
         {
             $meet = new Meet();
@@ -78,6 +90,7 @@ class AppFixtures extends Fixture
             $meet->setIsUrgent($faker->randomElement([true,false]));
             $meet->setIsVideo($faker->randomElement([true,false]));
             $meet->setIsMissedMeet($faker->randomElement([true,false]));
+            $meet->setTour($tours[random_int(0,count($tours)-1)]);
             $nbMeet = random_int(1,5);
             for ($j=0;$j<=$nbMeet-1;$j++)
             {
