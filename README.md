@@ -4,7 +4,7 @@
 [![Langage](https://skillicons.dev/icons?i=php)](https://skillicons.dev) 
 
 ## Description du projet
-L'objectif de ce projet était de développer la partie backend du projet 'le doc' réalisé dans le module Angular. Dans les grandes fonctionalités, cette application permet gestion de patients pour le personnel de Santé. 
+L'objectif de ce projet était de développer la partie backend de 'le doc' réalisé dans le module Angular. Dans les grandes fonctionalités, cette application permet la gestion de patients pour le personnel de Santé. 
 L'API actuelle était réalisée en Nest avec du NodeJS et nous l'avons redéveloppé en Symfony.
 
 ## Installation du projet
