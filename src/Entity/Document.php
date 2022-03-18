@@ -18,7 +18,7 @@ class Document
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    #[ORM\Column(type: 'datetime_immutable')]
+    #[ORM\Column(type: 'datetime')]
     private $uploadAt;
 
     #[ORM\Column(type: 'boolean')]
@@ -45,12 +45,12 @@ class Document
         return $this;
     }
 
-    public function getUploadAt(): ?\DateTimeImmutable
+    public function getUploadAt(): ?\DateTime
     {
         return $this->uploadAt;
     }
 
-    public function setUploadAt(\DateTimeImmutable $uploadAt): self
+    public function setUploadAt(\DateTime $uploadAt): self
     {
         $this->uploadAt = $uploadAt;
 

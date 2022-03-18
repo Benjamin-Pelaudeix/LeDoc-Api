@@ -3,10 +3,12 @@
 namespace App\DataFixtures;
 
 use App\Entity\BloodGroup;
+use App\Entity\Document;
 use App\Entity\Drug;
 use App\Entity\Gender;
 use App\Entity\Meet;
 use App\Entity\Patient;
+use App\Entity\Tour;
 use App\Entity\Treatment;
 use App\Repository\GenderRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -20,6 +22,14 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create('fr_FR');
+
+        // Creation of constants to define properly numbers of datas
+        define('DRUGS_NUMBER',10);
+        define('TOUR_NUMBER',10);
+        define('PATIENT_NUMBER',10);
+        define('MEET_NUMBER',50);
+        define('TREATMENT_NUMBER',10);
+        define('DOCUMENT_NUMBER',10);
 
         // GENDER DATAS
         $male = new Gender();
@@ -41,7 +51,7 @@ class AppFixtures extends Fixture
         $manager->flush();
 
         // DRUG DATAS
-        for ($i=0;$i<=10;$i++)
+        for ($i=0;$i<DRUGS_NUMBER;$i++)
         {
             $drug = new Drug();
             $drug->setLabel($faker->word);
@@ -49,8 +59,18 @@ class AppFixtures extends Fixture
         }
         $manager->flush();
 
+        // TOUR DATAS
+        for ($i=0;$i<TOUR_NUMBER;$i++)
+        {
+            $tour = new Tour();
+            $tour->setName($faker->word);
+            $tour->setDate(new \DateTime('now'));
+            $manager->persist($tour);
+        }
+        $manager->flush();
+
         // PATIENTS DATAS
-        for ($i=0;$i<=10;$i++)
+        for ($i=0;$i<PATIENT_NUMBER;$i++)
         {
             $patient = new Patient();
             $patient->setFirstName($faker->firstName);
@@ -68,7 +88,8 @@ class AppFixtures extends Fixture
 
         // MEETS DATAS
         $patients = $manager->getRepository(Patient::class)->findAll();
-        for($i=0;$i<=50;$i++)
+        $tours = $manager->getRepository(Tour::class)->findAll();
+        for($i=0;$i<MEET_NUMBER;$i++)
         {
             $meet = new Meet();
             $meet->setSubject($faker->word);
@@ -76,7 +97,8 @@ class AppFixtures extends Fixture
             $meet->setNotes($faker->word);
             $meet->setIsUrgent($faker->randomElement([true,false]));
             $meet->setIsVideo($faker->randomElement([true,false]));
-
+            $meet->setIsMissedMeet($faker->randomElement([true,false]));
+            $meet->setTour($tours[random_int(0,count($tours)-1)]);
             $nbMeet = random_int(1,5);
             for ($j=0;$j<=$nbMeet-1;$j++)
             {
@@ -87,7 +109,7 @@ class AppFixtures extends Fixture
         $manager->flush();
 
         // TREATMENT DATAS
-        for ($i=0;$i<=20;$i++)
+        for ($i=0;$i<TREATMENT_NUMBER;$i++)
         {
             $date = $faker->dateTimeThisMonth;
             $treatment = new Treatment();
@@ -99,6 +121,17 @@ class AppFixtures extends Fixture
         }
         $manager->flush();
 
+        // DOCUMENT DATAS
+        for ($i=0;$i<DOCUMENT_NUMBER;$i++)
+        {
+            $document = new Document();
+            $document->setPatient($patients[random_int(0,count($patients)-1)]);
+            $document->setName($faker->word);
+            $document->setIsOrdonnance($faker->randomElement([true,false]));
+            $document->setUploadAt(new \DateTime('now'));
+            $manager->persist($document);
+        }
+        $manager->flush();
     }
 
 
